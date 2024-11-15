@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shakespearean Insult Unblocker</title>
+    <style>
+        /* Page Styling */
+        body {
+            font-family: 'Georgia', serif;
+            background: radial-gradient(circle, #1b1464, #2e3192, #7d4394);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px #000000;
+            margin-top: 20px;
+            color: #ffec3d;
+        }
+
+        label {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #ffffff;
+            text-shadow: 1px 1px 4px #000000;
+        }
+
+        input {
+            padding: 12px;
+            font-size: 1.2em;
+            border: 3px solid #4a90e2;
+            border-radius: 10px;
+            width: 70%;
+            max-width: 400px;
+            background-color: #e0f7fa;
+            color: #000;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #ffec3d;
+            color: #1b1464;
+            font-weight: bold;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 15px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 15px #ffec3d;
+        }
+
+        .fullscreen-btn {
+            background-color: #4a90e2;
+            margin-top: 10px;
+        }
+
+        iframe {
+            width: 90%;
+            height: 500px;
+            border: 3px solid #ffec3d;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        /* Styling for Shakespearean Insults */
+        .insult {
+            position: absolute;
+            color: #ffec3d;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-shadow: 1px 1px 8px #000000;
+            opacity: 0;
+            animation: fadeInOut 4s ease-out;
+            pointer-events: none;
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: scale(1.2) translateY(20px);
+            }
+            10% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Unblock & Behold Thy Shakespearean Insults!</h1>
+    
+    <label for="urlInput">Enter URL to Unblock:</label>
+    <input type="text" id="urlInput" placeholder="https://example.com">
+    <button onclick="unblockAndDisplay()">Unblock URL</button>
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+    
+    <iframe id="unblockedFrame"></iframe>
+
+    <script>
+        const insults = [
+            "Thou art as fat as butter!",
+            "Peace, filthy worm!",
+            "Thou pribbling ill-nurtured knave!",
+            "Thou spongy dizzy-eyed nut-hook!",
+            "Thou loggerheaded reeling-ripe knave!",
+            "Thou gleeking ill-breeding canker-blossom!",
+            "Thou fusty weather-bitten clotpole!",
+            "Thou saucy common-kissing moldwarp!",
+            "Thou currish hasty-witted dewberry!",
+            "Thou gorbellied flap-mouthed scullion!",
+            "Thou reeky onion-eyed miscreant!",
+            "Thou impertinent sheep-biting measle!",
+            "Thou paunchy earth-vexing scullion!",
+            "Thou spleeny weather-bitten lout!",
+            "Thou reeky idle-headed pignut!",
+            "Thou bawdy folly-fallen apple-john!",
+            "Thou rank unwashed wench!",
+            "Thou yeasty hasty-witted miscreant!",
+            "Thou churlish muddy-mettled baggage!",
+            "Thou goatish motley-minded hedge-pig!",
+            "Thou knavish spur-galled miscreant!",
+            "Thou ruttish ill-composed tallow-catch!",
+            "Thou spongy unwashed foot-licker!",
+            "Thou scurvy scale-eating louse!",
+            "Thou frothy dread-bolted scullion!",
+            "Thou spongy pottle-deep miscreant!"
+        ];
+
+        function showRandomInsult() {
+            const insult = document.createElement('div');
+            insult.className = 'insult';
+            insult.textContent = insults[Math.floor(Math.random() * insults.length)];
+
+            // Random positioning
+            insult.style.top = `${Math.random() * 80 + 10}%`;
+            insult.style.left = `${Math.random() * 80 + 10}%`;
+            document.body.appendChild(insult);
+
+            // Remove insult after animation ends
+            setTimeout(() => insult.remove(), 4000);
+        }
+
+        // Show an insult every 1.5 seconds
+        setInterval(showRandomInsult, 1500);
+
+        function unblockAndDisplay() {
+            const url = document.getElementById("urlInput").value;
+            const corsProxy = "https://cors.ssp.42web.io/";
+            const unblockedUrl = corsProxy + url;
+
+            fetch(unblockedUrl)
+                .then(response => response.text())
+                .then(html => {
+                    const iframe = document.getElementById("unblockedFrame");
+                    iframe.srcdoc = html;
+                })
+                .catch(error => {
+                    console.error("Error unblocking the URL:", error);
+                });
+        }
+
+        function toggleFullscreen() {
+            const iframe = document.getElementById("unblockedFrame");
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) { /* Safari */
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) { /* IE11 */
+                iframe.msRequestFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
